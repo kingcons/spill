@@ -1,0 +1,17 @@
+# Spill
+
+## Usage
+
+## Installation
+
+## Author
+
+* Brit Butler (brit@kingcons.io)
+
+## Copyright
+
+Copyright (c) 2018 Brit Butler (brit@kingcons.io)
+
+## License
+
+Licensed under the LLGPL License.
