@@ -12,10 +12,12 @@
   :author "Brit Butler"
   :license "LLGPL"
   :depends-on ("alexandria"
-               "trivia")
+               "trivia"
+               "trivia.quasiquote")
   :components ((:module "src"
                 :components
-                ((:file "spill"))))
+                ((:file "spill")
+                 (:file "spill-ch1"))))
   :description "Simple Pedagogical Implementation of a Little Lisp"
   :long-description
   #.(read-file-string
