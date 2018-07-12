@@ -18,14 +18,21 @@
 (defun header (form)
   (list :program form))
 
+(defmacro with-patched-function ((name patch) &body body)
+  (alexandria:with-unique-names (old-value)
+    `(let ((,old-value (fdefinition ',name)))
+       (setf (fdefinition ',name) ,patch)
+       ,@body
+       (setf (fdefinition ',name) ,old-value))))
+
 (is (interpret-l0 (read-program "tests/test2.lang0")) 42)
 
-
-(let ((form1 '(+ (read) (- (+ 5 3))))
-      (form2 '(+ 1 (+ (read) 1)))
-      (form3 '(- (+ (read) (- 5)))))
-  (loop for form in (list form1 form2 form3)
-        do (let ((program (header form)))
-             (is (interpret-l0 program) (compile-l0 program)))))
+(with-patched-function (spill-ch1::read-integer (lambda () 42))
+  (let ((form1 '(+ (read) (- (+ 5 3))))
+        (form2 '(+ 1 (+ (read) 1)))
+        (form3 '(- (+ (read) (- 5)))))
+    (loop for form in (list form1 form2 form3)
+          do (let ((program (header form)))
+               (is (interpret-l0 program) (compile-l0 program))))))
 
 (finalize)
