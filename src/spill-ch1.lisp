@@ -2,7 +2,7 @@
   (:use :cl :trivia :spill)
   (:import-from :named-readtables #:in-readtable)
   (:export #:interpret
-           #:pe-compile))
+           #:peval))
 
 (in-package :spill-ch1)
 
@@ -37,13 +37,13 @@
       (+ arg1 arg2)
       `(+ ,arg1 ,arg2)))
 
-(defun peval (exp)
+(defun pe-math (exp)
   (match exp
     ((guard exp (integerp exp)) exp)
     (`(read) '(read))
-    (`(- ,e1) (pe-neg (peval e1)))
-    (`(+ ,e1 ,e2) (pe-add (peval e1) (peval e2)))))
+    (`(- ,e1) (pe-neg (pe-math e1)))
+    (`(+ ,e1 ,e2) (pe-add (pe-math e1) (pe-math e2)))))
 
-(defun pe-compile (program)
+(defun peval (program)
   (match program
-    (`(:program ,exp) (list :program (peval exp)))))
+    (`(:program ,exp) (list :program (pe-math exp)))))

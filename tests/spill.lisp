@@ -13,7 +13,7 @@
   (spill-ch1:interpret form))
 
 (defun compile-l0 (form)
-  (spill-ch1:interpret (spill-ch1:pe-compile form)))
+  (spill-ch1:interpret (spill-ch1:peval form)))
 
 (defun header (form)
   (list :program form))
