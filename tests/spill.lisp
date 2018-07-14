@@ -1,13 +1,11 @@
 (defpackage spill-test
-  (:use :cl
-        :spill
-        :prove))
+  (:use :cl :spill :prove))
 
 (in-package :spill-test)
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :spill)' in your Lisp.
 
-(plan 4)
+(plan 5)
 
 (defun interpret-l0 (form)
   (spill-ch1:interpret form))
@@ -34,5 +32,8 @@
     (loop for form in (list form1 form2 form3)
           do (let ((program (header form)))
                (is (interpret-l0 program) (compile-l0 program))))))
+
+(is (spill-ch1:peval (header '(+ 1 (+ (read) 1))))
+    (header '(+ 2 (read))))
 
 (finalize)

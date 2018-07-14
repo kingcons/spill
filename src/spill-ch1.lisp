@@ -32,10 +32,16 @@
       `(- ,arg)))
 
 (defun pe-add (arg1 arg2)
-  (if (and (integerp arg1)
-           (integerp arg2))
-      (+ arg1 arg2)
-      `(+ ,arg1 ,arg2)))
+  (cond ((and (integerp arg1)
+              (integerp arg2))
+         (+ arg1 arg2))
+        ((integerp arg2)
+         `(+ ,arg2 ,arg1))
+        ((and (listp arg2)
+              (eql '+ (first arg2)))
+         `(+ ,(+ arg1 (second arg2)) ,(alexandria:last-elt arg2)))
+        (t
+         `(+ ,arg1 ,arg2))))
 
 (defun pe-math (exp)
   (match exp
